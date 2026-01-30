@@ -193,12 +193,12 @@
     {
       "name": "자마젠타(방패왕)",
       "normal_attack": "메탈클로",
+      "normal_type": "강철",
       "charge_attack": "인파이트",
+      "charge_type": "격투",
       "dps": "51.4",
       "tdo": "98.5",
-      "overall": "64.2",
-      "normal_type": "격투",
-      "charge_type": "격투"
+      "overall": "64.2"
     },
     {
       "name": "괴력몬",
@@ -333,12 +333,12 @@
     {
       "name": "뮤츠",
       "normal_attack": "사이코커터",
+      "normal_type": "에스퍼",
       "charge_attack": "기합구슬",
+      "charge_type": "격투",
       "dps": "55.3",
       "tdo": "38.8",
-      "overall": "53.7",
-      "normal_type": "격투",
-      "charge_type": "격투"
+      "overall": "53.7"
     }
   ],
   "악": [
@@ -2811,12 +2811,12 @@
     {
       "name": "멜메탈",
       "normal_attack": "전기쇼크",
+      "normal_type": "전기",
       "charge_attack": "더블펀처*",
+      "charge_type": "강철",
       "dps": "59.7",
       "tdo": "87.5",
-      "overall": "74.0",
-      "normal_type": "강철",
-      "charge_type": "강철"
+      "overall": "74.0"
     },
     {
       "name": "루카리오",
@@ -2911,12 +2911,12 @@
     {
       "name": "지라치",
       "normal_attack": "염동력",
+      "normal_type": "에스퍼",
       "charge_attack": "파멸의소원",
+      "charge_type": "강철",
       "dps": "55.2",
       "tdo": "76.5",
-      "overall": "67.5",
-      "normal_type": "강철",
-      "charge_type": "강철"
+      "overall": "67.5"
     },
     {
       "name": "대도각참",
@@ -2941,12 +2941,12 @@
     {
       "name": "히드런",
       "normal_attack": "회오리불꽃",
+      "normal_type": "불꽃",
       "charge_attack": "아이언헤드",
+      "charge_type": "강철",
       "dps": "51.6",
       "tdo": "86.1",
-      "overall": "66.1",
-      "normal_type": "강철",
-      "charge_type": "강철"
+      "overall": "66.1"
     },
     {
       "name": "그림자 핫삼",
@@ -3053,12 +3053,12 @@
     {
       "name": "보만다(메가)",
       "normal_attack": "불꽃엄니",
+      "normal_type": "불꽃",
       "charge_attack": "공중날기",
+      "charge_type": "비행",
       "dps": "87.9",
       "tdo": "80.4",
-      "overall": "100.0",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "100.0"
     },
     {
       "name": "레쿠쟈¹",
@@ -3123,32 +3123,32 @@
     {
       "name": "러브로스(화신폼)",
       "normal_attack": "요정의바람",
+      "normal_type": "페어리",
       "charge_attack": "공중날기",
+      "charge_type": "비행",
       "dps": "83.9",
       "tdo": "50.1",
-      "overall": "85.8",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "85.8"
     },
     {
       "name": "보만다",
       "normal_attack": "불꽃엄니",
+      "normal_type": "불꽃",
       "charge_attack": "공중날기",
+      "charge_type": "비행",
       "dps": "80.5",
       "tdo": "50.7",
-      "overall": "83.4",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "83.4"
     },
     {
       "name": "정화 루기아(APEX)",
       "normal_attack": "신통력",
+      "normal_type": "에스퍼",
       "charge_attack": "에어로블라스트++**",
+      "charge_type": "비행",
       "dps": "69.2",
       "tdo": "75.0",
-      "overall": "82.1",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "82.1"
     },
     {
       "name": "그림자 찌르호크",
@@ -3163,22 +3163,22 @@
     {
       "name": "프리져(가라르)",
       "normal_attack": "사이코커터",
+      "normal_type": "에스퍼",
       "charge_attack": "공중날기",
+      "charge_type": "비행",
       "dps": "78.1",
       "tdo": "49.1",
-      "overall": "80.9",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "80.9"
     },
     {
       "name": "그림자 루기아",
       "normal_attack": "신통력",
+      "normal_type": "에스퍼",
       "charge_attack": "에어로블라스트*",
+      "charge_type": "비행",
       "dps": "71.1",
       "tdo": "64.2",
-      "overall": "80.6",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "80.6"
     },
     {
       "name": "피죤투(메가)",
@@ -3213,12 +3213,12 @@
     {
       "name": "칠색조¹",
       "normal_attack": "불태우기",
+      "normal_type": "불꽃",
       "charge_attack": "브레이브버드",
+      "charge_type": "비행",
       "dps": "66.2",
       "tdo": "68.3",
-      "overall": "77.6",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "77.6"
     },
     {
       "name": "칠색조²",
@@ -3273,22 +3273,22 @@
     {
       "name": "루기아",
       "normal_attack": "신통력",
+      "normal_type": "에스퍼",
       "charge_attack": "에어로블라스트*",
+      "charge_type": "비행",
       "dps": "59.2",
       "tdo": "64.2",
-      "overall": "70.2",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "70.2"
     },
     {
       "name": "썬더(가라르)",
       "normal_attack": "카운터",
+      "normal_type": "격투",
       "charge_attack": "공중날기",
+      "charge_type": "비행",
       "dps": "65.7",
       "tdo": "44.3",
-      "overall": "69.3",
-      "normal_type": "비행",
-      "charge_type": "비행"
+      "overall": "69.3"
     },
     {
       "name": "워글",
@@ -3365,22 +3365,22 @@
     {
       "name": "팬텀(메가)¹",
       "normal_attack": "핥기*",
+      "normal_type": "고스트",
       "charge_attack": "오물폭탄",
+      "charge_type": "독",
       "dps": "100.0",
       "tdo": "81.1",
-      "overall": "93.1",
-      "normal_type": "독",
-      "charge_type": "독"
+      "overall": "93.1"
     },
     {
       "name": "팬텀(메가)²",
       "normal_attack": "섀도클로",
+      "normal_type": "고스트",
       "charge_attack": "오물폭탄",
+      "charge_type": "독",
       "dps": "91.9",
       "tdo": "74.5",
-      "overall": "85.6",
-      "normal_type": "독",
-      "charge_type": "독"
+      "overall": "85.6"
     },
     {
       "name": "텅비드",
@@ -3455,12 +3455,12 @@
     {
       "name": "그림자 팬텀",
       "normal_attack": "섀도클로",
+      "normal_type": "고스트",
       "charge_attack": "오물폭탄",
+      "charge_type": "독",
       "dps": "86.5",
       "tdo": "44.8",
-      "overall": "72.0",
-      "normal_type": "독",
-      "charge_type": "독"
+      "overall": "72.0"
     },
     {
       "name": "이상해꽃(메가)",
@@ -3535,12 +3535,12 @@
     {
       "name": "팬텀",
       "normal_attack": "섀도클로",
+      "normal_type": "고스트",
       "charge_attack": "오물폭탄",
+      "charge_type": "독",
       "dps": "71.4",
       "tdo": "44.4",
-      "overall": "62.3",
-      "normal_type": "독",
-      "charge_type": "독"
+      "overall": "62.3"
     },
     {
       "name": "그림자 드래피온",
@@ -3555,12 +3555,12 @@
     {
       "name": "다크라이",
       "normal_attack": "바크아웃",
+      "normal_type": "악",
       "charge_attack": "오물폭탄*",
+      "charge_type": "독",
       "dps": "75.0",
       "tdo": "33.8",
-      "overall": "60.3",
-      "normal_type": "독",
-      "charge_type": "독"
+      "overall": "60.3"
     },
     {
       "name": "질뻐기(알로라)",
@@ -4623,12 +4623,12 @@
     {
       "name": "자시안(검왕)",
       "normal_attack": "메탈클로",
+      "normal_type": "강철",
       "charge_attack": "치근거리기",
+      "charge_type": "페어리",
       "dps": "89.9",
       "tdo": "115.6",
-      "overall": "115.1",
-      "normal_type": "페어리",
-      "charge_type": "페어리"
+      "overall": "115.1"
     },
     {
       "name": "러브로스(화신폼)",
@@ -4683,22 +4683,22 @@
     {
       "name": "카푸꼬꼬꼭",
       "normal_attack": "볼트체인지",
+      "normal_type": "전기",
       "charge_attack": "자연의분노*",
+      "charge_type": "페어리",
       "dps": "79.9",
       "tdo": "61.4",
-      "overall": "89.9",
-      "normal_type": "페어리",
-      "charge_type": "페어리"
+      "overall": "89.9"
     },
     {
       "name": "카푸브루루",
       "normal_attack": "씨기관총",
+      "normal_type": "풀",
       "charge_attack": "자연의분노*",
+      "charge_type": "페어리",
       "dps": "76.6",
       "tdo": "69.0",
-      "overall": "89.7",
-      "normal_type": "페어리",
-      "charge_type": "페어리"
+      "overall": "89.7"
     },
     {
       "name": "토게키스",
@@ -4853,6 +4853,26 @@
   ],
   "얼음": [
     {
+      "name": "큐레무(화이트)",
+      "normal_attack": "얼음엄니",
+      "normal_type": "얼음",
+      "charge_attack": "콜드플레어**",
+      "charge_type": "얼음",
+      "dps": "119.6",
+      "tdo": "124.2",
+      "overall": "130.3"
+    },
+    {
+      "name": "큐레무(블랙)",
+      "normal_attack": "드래곤테일",
+      "normal_type": "드래곤",
+      "charge_attack": "프리즈볼트**",
+      "charge_type": "얼음",
+      "dps": "112.8",
+      "tdo": "117.2",
+      "overall": "122.9"
+    },
+    {
       "name": "그림자 맘모꾸리",
       "normal_attack": "눈싸라기",
       "charge_attack": "눈사태",
@@ -4865,22 +4885,22 @@
     {
       "name": "가이오가(원시)",
       "normal_attack": "폭포오르기",
+      "normal_type": "물",
       "charge_attack": "눈사태",
+      "charge_type": "얼음",
       "dps": "87.6",
       "tdo": "100.0",
-      "overall": "97.7",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
+      "overall": "97.7"
     },
     {
       "name": "그림자 뮤츠",
       "normal_attack": "사이코커터",
+      "normal_type": "에스퍼",
       "charge_attack": "냉동빔",
+      "charge_type": "얼음",
       "dps": "94.5",
       "tdo": "67.9",
-      "overall": "93.8",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
+      "overall": "93.8"
     },
     {
       "name": "그림자 포푸니라",
@@ -4935,12 +4955,12 @@
     {
       "name": "큐레무",
       "normal_attack": "용의숨결",
+      "normal_type": "드래곤",
       "charge_attack": "얼어붙은세계*",
+      "charge_type": "얼음",
       "dps": "82.7",
       "tdo": "80.3",
-      "overall": "88.6",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
+      "overall": "88.6"
     },
     {
       "name": "얼음귀신(메가)",
@@ -4975,12 +4995,12 @@
     {
       "name": "뮤츠",
       "normal_attack": "사이코커터",
+      "normal_type": "에스퍼",
       "charge_attack": "냉동빔",
+      "charge_type": "얼음",
       "dps": "77.8",
       "tdo": "67.0",
-      "overall": "80.9",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
+      "overall": "80.9"
     },
     {
       "name": "글레이시아¹",
@@ -5129,26 +5149,6 @@
       "dps": "58.0",
       "tdo": "73.6",
       "overall": "66.4",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
-    },
-    {
-      "name": "큐레무(화이트)",
-      "normal_attack": "얼음엄니",
-      "charge_attack": "콜드플레어**",
-      "dps": "119.6",
-      "tdo": "124.2",
-      "overall": "130.3",
-      "normal_type": "얼음",
-      "charge_type": "얼음"
-    },
-    {
-      "name": "큐레무(블랙)",
-      "normal_attack": "드래곤테일",
-      "charge_attack": "프리즈볼트**",
-      "dps": "112.8",
-      "tdo": "117.2",
-      "overall": "122.9",
       "normal_type": "얼음",
       "charge_type": "얼음"
     }
