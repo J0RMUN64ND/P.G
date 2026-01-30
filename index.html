@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon GO Raid - 타입별 최적의 공격팀</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .edit-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .edit-btn:hover { background: rgba(255,255,255,0.3); }
+        .edit-btn.active { background: #4CAF50; }
+        .header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .header p { color: #aaa; font-size: 0.9rem; }
+        .search-container { max-width: 500px; margin: 15px auto 0; }
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-input::placeholder { color: #888; }
+        .type-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .type-tab {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #fff;
+        }
+        .type-tab:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .type-tab.active { box-shadow: 0 0 20px currentColor; }
+        .type-tab.dimmed { opacity: 0.3; }
+        .type-tab.has-match { box-shadow: 0 0 15px currentColor; }
+        .type-격투 { background: #C22E28; }
+        .type-악 { background: #705746; }
+        .type-바위 { background: #B6A136; }
+        .type-땅 { background: #E2BF65; color: #333; }
+        .type-물 { background: #6390F0; }
+        .type-불꽃 { background: #EE8130; }
+        .type-풀 { background: #7AC74C; }
+        .type-고스트 { background: #735797; }
+        .type-벌레 { background: #A6B91A; }
+        .type-강철 { background: #B7B7CE; color: #333; }
+        .type-비행 { background: #A98FF3; }
+        .type-독 { background: #A33EA1; }
+        .type-전기 { background: #F7D02C; color: #333; }
+        .type-드래곤 { background: #6F35FC; }
+        .type-에스퍼 { background: #F95587; }
+        .type-페어리 { background: #D685AD; }
+        .type-얼음 { background: #96D9D6; color: #333; }
+        .content { max-width: 1400px; margin: 0 auto; padding: 0 20px 40px; }
+        .type-section { margin-bottom: 30px; display: none; }
+        .type-section.active { display: block; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 15px;
+        }
+        .section-header h2 { font-size: 1.5rem; }
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+        }
+        .pokemon-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 15px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .pokemon-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .pokemon-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+        .pokemon-moves { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+        .move { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; }
+        .move.normal { border-left: 3px solid #4CAF50; }
+        .move.charge { border-left: 3px solid #FF9800; }
+        .pokemon-stats { display: flex; justify-content: space-between; gap: 10px; }
+        .stat { flex: 1; text-align: center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .stat-label { font-size: 0.75rem; color: #888; margin-bottom: 3px; }
+        .stat-value { font-size: 1rem; font-weight: 700; }
+        .stat-value.high { color: #4CAF50; }
+        .stat-value.medium { color: #FFC107; }
+        .stat-value.low { color: #f44336; }
+        .pokemon-card-wrapper { position: relative; }
+        .pokemon-card-wrapper.hidden { display: none; }
+        .rank-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #333; }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: #fff; }
+        .info-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6390F0;
+        }
+        .info-box h3 { margin-bottom: 10px; color: #6390F0; }
+        .info-box p { color: #aaa; font-size: 0.9rem; line-height: 1.6; }
+        .show-more-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .show-more-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .footer { text-align: center; padding: 30px; color: #666; font-size: 0.85rem; }
+
+        /* 편집 모드 스타일 */
+        .edit-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+            gap: 5px;
+        }
+        .edit-mode .edit-actions { display: flex; }
+        .edit-action-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .edit-action-btn.edit { background: #2196F3; color: #fff; }
+        .edit-action-btn.delete { background: #f44336; color: #fff; }
+        .edit-action-btn:hover { transform: scale(1.1); }
+
+        .add-pokemon-btn {
+            display: none;
+            width: 100%;
+            padding: 20px;
+            margin-top: 15px;
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px dashed #4CAF50;
+            border-radius: 15px;
+            color: #4CAF50;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .edit-mode .add-pokemon-btn { display: block; }
+        .add-pokemon-btn:hover { background: rgba(76, 175, 80, 0.3); }
+
+        /* 모달 스타일 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal h3 { margin-bottom: 20px; font-size: 1.3rem; }
+        .modal-field { margin-bottom: 15px; }
+        .modal-field label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9rem; }
+        .modal-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+        .modal-field input:focus { outline: none; border-color: #6390F0; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .modal-btn.save { background: #4CAF50; color: #fff; }
+        .modal-btn.cancel { background: rgba(255,255,255,0.1); color: #fff; }
+        .modal-btn:hover { transform: translateY(-2px); }
+
+        /* 편집 모드 툴바 */
+        .edit-toolbar {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            padding: 15px 25px;
+            border-radius: 30px;
+            gap: 15px;
+            z-index: 200;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .edit-mode .edit-toolbar { display: flex; }
+        .toolbar-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .toolbar-btn.save { background: #4CAF50; color: #fff; }
+        .toolbar-btn.cancel { background: #f44336; color: #fff; }
+        .toolbar-btn:hover { transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.4rem; }
+            .header-top { flex-direction: column; gap: 10px; }
+            .type-tabs { gap: 6px; padding: 15px; }
+            .type-tab { padding: 6px 12px; font-size: 0.8rem; }
+            .pokemon-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <button class="edit-btn" id="editBtn">편집</button>
+            <div>
+                <h1>Pokemon GO Raid - 타입별 최적의 공격팀</h1>
+                <p>개선된 게임프레스 DPS 기반 | 제작: Hawaii | 번역: 보물찾기왕 루</p>
+            </div>
+            <div style="width: 60px;"></div>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="포켓몬 이름으로 검색...">
+        </div>
+    </div>
+    <div class="type-tabs" id="typeTabs"></div>
+    <div class="content">
+        <div class="info-box">
+            <h3>수치 계산 방식</h3>
+            <p><strong>DPS:</strong> 초당 데미지 상대적 순위값 | <strong>TDO:</strong> 쓰러지기전 주는 총 데미지 상대적 순위값 | <strong>종합:</strong> (DPS³ × TDO)^0.25<br>* 레거시 기술머신 가능 | ** 스페셜 기술</p>
+        </div>
+        <div id="pokemonSections"></div>
+    </div>
+    <div class="footer">
+        <p>데이터 출처: Hawaii's Pokemon GO Raid Spreadsheet | 최신버전: bit.ly/pogoraidspec</p>
+    </div>
+
+    <!-- 편집 툴바 -->
+    <div class="edit-toolbar">
+        <button class="toolbar-btn save" onclick="saveChanges()">JSON 저장</button>
+        <button class="toolbar-btn cancel" onclick="cancelEdit()">취소</button>
+    </div>
+
+    <!-- 모달 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3 id="modalTitle">포켓몬 추가</h3>
+            <div class="modal-field">
+                <label>포켓몬 이름</label>
+                <input type="text" id="inputName" placeholder="예: 루카리오(메가)">
+            </div>
+            <div class="modal-field">
+                <label>일반 공격</label>
+                <input type="text" id="inputNormalAttack" placeholder="예: 카운터">
+            </div>
+            <div class="modal-field">
+                <label>차지 공격</label>
+                <input type="text" id="inputChargeAttack" placeholder="예: 파동탄">
+            </div>
+            <div class="modal-field">
+                <label>DPS</label>
+                <input type="text" id="inputDps" placeholder="예: 100.0">
+            </div>
+            <div class="modal-field">
+                <label>TDO</label>
+                <input type="text" id="inputTdo" placeholder="예: 85.0">
+            </div>
+            <div class="modal-field">
+                <label>종합</label>
+                <input type="text" id="inputOverall" placeholder="예: 95.0">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal()">취소</button>
+                <button class="modal-btn save" onclick="saveModal()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+let pokemonData = {};
+let originalData = {};
+const typeOrder = ['격투','악','바위','땅','물','불꽃','풀','고스트','벌레','강철','비행','독','전기','드래곤','에스퍼','페어리','얼음'];
+let currentType = '격투';
+const INITIAL_SHOW = 10;
+let isEditMode = false;
+let editingType = null;
+let editingIndex = null;
+
+// JSON 파일 로드
+async function loadPokemonData() {
+    try {
+        const response = await fetch('pokemon_data.json');
+        pokemonData = await response.json();
+        originalData = JSON.parse(JSON.stringify(pokemonData));
+        init();
+    } catch (error) {
+        console.error('데이터 로드 실패:', error);
+        alert('pokemon_data.json 파일을 불러올 수 없습니다.');
+    }
+}
+
+function init() {
+    renderTypeTabs();
+    renderPokemonSections();
+    setupSearch();
+    setupEditMode();
+}
+
+function getStatClass(v) {
+    const n = parseFloat(v);
+    return n >= 90 ? 'high' : n >= 70 ? 'medium' : 'low';
+}
+
+function renderTypeTabs() {
+    const c = document.getElementById('typeTabs');
+    c.innerHTML = '';
+    typeOrder.forEach(t => {
+        const b = document.createElement('button');
+        b.className = `type-tab type-${t} ${t === currentType ? 'active' : ''}`;
+        b.textContent = t;
+        b.onclick = () => selectType(t);
+        c.appendChild(b);
+    });
+}
+
+function selectType(t) {
+    currentType = t;
+    document.querySelectorAll('.type-tab').forEach(tab =>
+        tab.classList.toggle('active', tab.textContent === t)
+    );
+    document.querySelectorAll('.type-section').forEach(s =>
+        s.classList.toggle('active', s.dataset.type === t)
+    );
+}
+
+function renderPokemonSections() {
+    const c = document.getElementById('pokemonSections');
+    c.innerHTML = '';
+
+    typeOrder.forEach(type => {
+        const s = document.createElement('div');
+        s.className = `type-section ${type === currentType ? 'active' : ''}`;
+        s.dataset.type = type;
+
+        const h = document.createElement('div');
+        h.className = `section-header type-${type}`;
+        const pokemons = pokemonData[type] || [];
+        h.innerHTML = `<h2>${type} 타입에 최고의 공격팀 (${pokemons.length}마리)</h2>`;
+        s.appendChild(h);
+
+        const g = document.createElement('div');
+        g.className = 'pokemon-grid';
+        g.id = `grid-${type}`;
+
+        pokemons.forEach((p, i) => {
+            const w = document.createElement('div');
+            w.className = `pokemon-card-wrapper ${i >= INITIAL_SHOW ? 'hidden' : ''}`;
+            w.dataset.index = i;
+
+            let rankBadge = '';
+            if (i < 3) rankBadge = `<div class="rank-badge rank-${i+1}">${i+1}</div>`;
+
+            w.innerHTML = `
+                ${rankBadge}
+                <div class="pokemon-card" data-name="${p.name.toLowerCase()}" data-type="${type}" data-index="${i}">
+                    <div class="edit-actions">
+                        <button class="edit-action-btn edit" onclick="editPokemon('${type}', ${i})">✎</button>
+                        <button class="edit-action-btn delete" onclick="deletePokemon('${type}', ${i})">✕</button>
+                    </div>
+                    <div class="pokemon-name">${p.name}</div>
+                    <div class="pokemon-moves">
+                        <span class="move normal">${p.normal_attack}</span>
+                        <span class="move charge">${p.charge_attack}</span>
+                    </div>
+                    <div class="pokemon-stats">
+                        <div class="stat"><div class="stat-label">DPS</div><div class="stat-value ${getStatClass(p.dps)}">${p.dps}</div></div>
+                        <div class="stat"><div class="stat-label">TDO</div><div class="stat-value ${getStatClass(p.tdo)}">${p.tdo}</div></div>
+                        <div class="stat"><div class="stat-label">종합</div><div class="stat-value ${getStatClass(p.overall)}">${p.overall}</div></div>
+                    </div>
+                </div>
+            `;
+            g.appendChild(w);
+        });
+
+        s.appendChild(g);
+
+        // 더보기 버튼
+        if (pokemons.length > INITIAL_SHOW) {
+            const btn = document.createElement('button');
+            btn.className = 'show-more-btn';
+            btn.id = `btn-${type}`;
+            btn.textContent = `더보기 (+${pokemons.length - INITIAL_SHOW}마리)`;
+            btn.onclick = () => toggleShowMore(type, btn);
+            s.appendChild(btn);
+        }
+
+        // 추가 버튼
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-pokemon-btn';
+        addBtn.textContent = '+ 새 포켓몬 추가';
+        addBtn.onclick = () => addPokemon(type);
+        s.appendChild(addBtn);
+
+        c.appendChild(s);
+    });
+}
+
+function toggleShowMore(type, btn) {
+    const grid = document.getElementById(`grid-${type}`);
+    const hiddenCards = grid.querySelectorAll('.pokemon-card-wrapper.hidden');
+
+    if (hiddenCards.length > 0) {
+        hiddenCards.forEach(card => card.classList.remove('hidden'));
+        btn.textContent = '접기';
+    } else {
+        grid.querySelectorAll('.pokemon-card-wrapper').forEach(card => {
+            if (parseInt(card.dataset.index) >= INITIAL_SHOW) {
+                card.classList.add('hidden');
+            }
+        });
+        const total = pokemonData[type]?.length || 0;
+        btn.textContent = `더보기 (+${total - INITIAL_SHOW}마리)`;
+    }
+}
+
+function setupSearch() {
+    document.getElementById('searchInput').addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        if (q === '') {
+            document.querySelectorAll('.pokemon-card-wrapper').forEach(w => {
+                const idx = parseInt(w.dataset.index);
+                const section = w.closest('.type-section');
+                const type = section.dataset.type;
+                const btn = document.getElementById(`btn-${type}`);
+                if (btn && btn.textContent !== '접기') {
+                    w.classList.toggle('hidden', idx >= INITIAL_SHOW);
+                } else {
+                    w.classList.remove('hidden');
+                }
+            });
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.classList.remove('dimmed', 'has-match');
+            });
+        } else {
+            document.querySelectorAll('.pokemon-card-wrapper').forEach(w => {
+                const card = w.querySelector('.pokemon-card');
+                w.classList.toggle('hidden', !card.dataset.name.includes(q));
+            });
+
+            const matchingTypes = new Set();
+            document.querySelectorAll('.pokemon-card').forEach(card => {
+                if (card.dataset.name.includes(q)) {
+                    const section = card.closest('.type-section');
+                    matchingTypes.add(section.dataset.type);
+                }
+            });
+
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                const type = tab.textContent;
+                if (matchingTypes.has(type)) {
+                    tab.classList.remove('dimmed');
+                    tab.classList.add('has-match');
+                } else {
+                    tab.classList.add('dimmed');
+                    tab.classList.remove('has-match');
+                }
+            });
+
+            if (matchingTypes.size > 0) {
+                const firstMatchType = typeOrder.find(t => matchingTypes.has(t));
+                if (firstMatchType && firstMatchType !== currentType) {
+                    selectType(firstMatchType);
+                }
+            }
+        }
+    });
+}
+
+// 편집 모드
+function setupEditMode() {
+    document.getElementById('editBtn').addEventListener('click', () => {
+        isEditMode = !isEditMode;
+        document.body.classList.toggle('edit-mode', isEditMode);
+        document.getElementById('editBtn').classList.toggle('active', isEditMode);
+        document.getElementById('editBtn').textContent = isEditMode ? '편집 중' : '편집';
+    });
+}
+
+function addPokemon(type) {
+    editingType = type;
+    editingIndex = null;
+    document.getElementById('modalTitle').textContent = `${type} 타입에 포켓몬 추가`;
+    document.getElementById('inputName').value = '';
+    document.getElementById('inputNormalAttack').value = '';
+    document.getElementById('inputChargeAttack').value = '';
+    document.getElementById('inputDps').value = '';
+    document.getElementById('inputTdo').value = '';
+    document.getElementById('inputOverall').value = '';
+    document.getElementById('modalOverlay').classList.add('show');
+}
+
+function editPokemon(type, index) {
+    editingType = type;
+    editingIndex = index;
+    const p = pokemonData[type][index];
+    document.getElementById('modalTitle').textContent = '포켓몬 수정';
+    document.getElementById('inputName').value = p.name;
+    document.getElementById('inputNormalAttack').value = p.normal_attack;
+    document.getElementById('inputChargeAttack').value = p.charge_attack;
+    document.getElementById('inputDps').value = p.dps;
+    document.getElementById('inputTdo').value = p.tdo;
+    document.getElementById('inputOverall').value = p.overall;
+    document.getElementById('modalOverlay').classList.add('show');
+}
+
+function deletePokemon(type, index) {
+    if (confirm(`"${pokemonData[type][index].name}"을(를) 삭제하시겠습니까?`)) {
+        pokemonData[type].splice(index, 1);
+        renderPokemonSections();
+    }
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+    editingType = null;
+    editingIndex = null;
+}
+
+function saveModal() {
+    const name = document.getElementById('inputName').value.trim();
+    const normal_attack = document.getElementById('inputNormalAttack').value.trim();
+    const charge_attack = document.getElementById('inputChargeAttack').value.trim();
+    const dps = document.getElementById('inputDps').value.trim();
+    const tdo = document.getElementById('inputTdo').value.trim();
+    const overall = document.getElementById('inputOverall').value.trim();
+
+    if (!name || !normal_attack || !charge_attack || !dps || !tdo || !overall) {
+        alert('모든 필드를 입력해주세요.');
+        return;
+    }
+
+    const pokemon = { name, normal_attack, charge_attack, dps, tdo, overall };
+
+    if (editingIndex === null) {
+        // 새로 추가
+        pokemonData[editingType].push(pokemon);
+    } else {
+        // 수정
+        pokemonData[editingType][editingIndex] = pokemon;
+    }
+
+    closeModal();
+    renderPokemonSections();
+}
+
+function saveChanges() {
+    const dataStr = JSON.stringify(pokemonData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pokemon_data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('JSON 파일이 다운로드됩니다.\n기존 pokemon_data.json 파일을 교체해주세요.');
+}
+
+function cancelEdit() {
+    if (confirm('변경사항을 취소하시겠습니까?')) {
+        pokemonData = JSON.parse(JSON.stringify(originalData));
+        renderPokemonSections();
+        isEditMode = false;
+        document.body.classList.remove('edit-mode');
+        document.getElementById('editBtn').classList.remove('active');
+        document.getElementById('editBtn').textContent = '편집';
+    }
+}
+
+// 모달 외부 클릭 시 닫기
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalOverlay')) {
+        closeModal();
+    }
+});
+
+// 데이터 로드 시작
+loadPokemonData();
+    </script>
+</body>
+</html>
