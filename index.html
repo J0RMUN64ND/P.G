@@ -126,9 +126,25 @@
         }
         .pokemon-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
         .pokemon-moves { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-        .move { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; }
-        .move.normal { border-left: 3px solid #4CAF50; }
-        .move.charge { border-left: 3px solid #FF9800; }
+        .move { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; border-left: 3px solid #888; }
+        .move.type-격투 { border-left-color: #C22E28; }
+        .move.type-악 { border-left-color: #705746; }
+        .move.type-바위 { border-left-color: #B6A136; }
+        .move.type-땅 { border-left-color: #E2BF65; }
+        .move.type-물 { border-left-color: #6390F0; }
+        .move.type-불꽃 { border-left-color: #EE8130; }
+        .move.type-풀 { border-left-color: #7AC74C; }
+        .move.type-고스트 { border-left-color: #735797; }
+        .move.type-벌레 { border-left-color: #A6B91A; }
+        .move.type-강철 { border-left-color: #B7B7CE; }
+        .move.type-비행 { border-left-color: #A98FF3; }
+        .move.type-독 { border-left-color: #A33EA1; }
+        .move.type-전기 { border-left-color: #F7D02C; }
+        .move.type-드래곤 { border-left-color: #6F35FC; }
+        .move.type-에스퍼 { border-left-color: #F95587; }
+        .move.type-페어리 { border-left-color: #D685AD; }
+        .move.type-얼음 { border-left-color: #96D9D6; }
+        .move.type-노말 { border-left-color: #A8A878; }
         .pokemon-stats { display: flex; justify-content: space-between; gap: 10px; }
         .stat { flex: 1; text-align: center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; }
         .stat-label { font-size: 0.75rem; color: #888; margin-bottom: 3px; }
@@ -344,11 +360,55 @@
             </div>
             <div class="modal-field">
                 <label>일반 공격</label>
-                <input type="text" id="inputNormalAttack" placeholder="예: 카운터">
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="inputNormalAttack" placeholder="예: 카운터" style="flex: 1;">
+                    <select id="inputNormalType" style="padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                        <option value="노말">노말</option>
+                        <option value="격투">격투</option>
+                        <option value="악">악</option>
+                        <option value="바위">바위</option>
+                        <option value="땅">땅</option>
+                        <option value="물">물</option>
+                        <option value="불꽃">불꽃</option>
+                        <option value="풀">풀</option>
+                        <option value="고스트">고스트</option>
+                        <option value="벌레">벌레</option>
+                        <option value="강철">강철</option>
+                        <option value="비행">비행</option>
+                        <option value="독">독</option>
+                        <option value="전기">전기</option>
+                        <option value="드래곤">드래곤</option>
+                        <option value="에스퍼">에스퍼</option>
+                        <option value="페어리">페어리</option>
+                        <option value="얼음">얼음</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-field">
                 <label>차지 공격</label>
-                <input type="text" id="inputChargeAttack" placeholder="예: 파동탄">
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="inputChargeAttack" placeholder="예: 파동탄" style="flex: 1;">
+                    <select id="inputChargeType" style="padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                        <option value="노말">노말</option>
+                        <option value="격투">격투</option>
+                        <option value="악">악</option>
+                        <option value="바위">바위</option>
+                        <option value="땅">땅</option>
+                        <option value="물">물</option>
+                        <option value="불꽃">불꽃</option>
+                        <option value="풀">풀</option>
+                        <option value="고스트">고스트</option>
+                        <option value="벌레">벌레</option>
+                        <option value="강철">강철</option>
+                        <option value="비행">비행</option>
+                        <option value="독">독</option>
+                        <option value="전기">전기</option>
+                        <option value="드래곤">드래곤</option>
+                        <option value="에스퍼">에스퍼</option>
+                        <option value="페어리">페어리</option>
+                        <option value="얼음">얼음</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-field">
                 <label>DPS</label>
@@ -462,8 +522,8 @@ function renderPokemonSections() {
                     </div>
                     <div class="pokemon-name">${p.name}</div>
                     <div class="pokemon-moves">
-                        <span class="move normal">${p.normal_attack}</span>
-                        <span class="move charge">${p.charge_attack}</span>
+                        <span class="move type-${p.normal_type || '노말'}">${p.normal_attack}</span>
+                        <span class="move type-${p.charge_type || '노말'}">${p.charge_attack}</span>
                     </div>
                     <div class="pokemon-stats">
                         <div class="stat"><div class="stat-label">DPS</div><div class="stat-value ${getStatClass(p.dps)}">${p.dps}</div></div>
@@ -585,7 +645,9 @@ function addPokemon(type) {
     document.getElementById('modalTitle').textContent = `${type} 타입에 포켓몬 추가`;
     document.getElementById('inputName').value = '';
     document.getElementById('inputNormalAttack').value = '';
+    document.getElementById('inputNormalType').value = type;
     document.getElementById('inputChargeAttack').value = '';
+    document.getElementById('inputChargeType').value = type;
     document.getElementById('inputDps').value = '';
     document.getElementById('inputTdo').value = '';
     document.getElementById('inputOverall').value = '';
@@ -599,7 +661,9 @@ function editPokemon(type, index) {
     document.getElementById('modalTitle').textContent = '포켓몬 수정';
     document.getElementById('inputName').value = p.name;
     document.getElementById('inputNormalAttack').value = p.normal_attack;
+    document.getElementById('inputNormalType').value = p.normal_type || '노말';
     document.getElementById('inputChargeAttack').value = p.charge_attack;
+    document.getElementById('inputChargeType').value = p.charge_type || '노말';
     document.getElementById('inputDps').value = p.dps;
     document.getElementById('inputTdo').value = p.tdo;
     document.getElementById('inputOverall').value = p.overall;
@@ -622,7 +686,9 @@ function closeModal() {
 function saveModal() {
     const name = document.getElementById('inputName').value.trim();
     const normal_attack = document.getElementById('inputNormalAttack').value.trim();
+    const normal_type = document.getElementById('inputNormalType').value;
     const charge_attack = document.getElementById('inputChargeAttack').value.trim();
+    const charge_type = document.getElementById('inputChargeType').value;
     const dps = document.getElementById('inputDps').value.trim();
     const tdo = document.getElementById('inputTdo').value.trim();
     const overall = document.getElementById('inputOverall').value.trim();
@@ -632,7 +698,7 @@ function saveModal() {
         return;
     }
 
-    const pokemon = { name, normal_attack, charge_attack, dps, tdo, overall };
+    const pokemon = { name, normal_attack, normal_type, charge_attack, charge_type, dps, tdo, overall };
 
     if (editingIndex === null) {
         // 새로 추가
@@ -641,6 +707,9 @@ function saveModal() {
         // 수정
         pokemonData[editingType][editingIndex] = pokemon;
     }
+
+    // 종합 점수로 내림차순 정렬
+    pokemonData[editingType].sort((a, b) => parseFloat(b.overall) - parseFloat(a.overall));
 
     closeModal();
     renderPokemonSections();
