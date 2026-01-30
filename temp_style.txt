@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon GO Raid - 타입별 최적의 공격팀</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .header p { color: #aaa; font-size: 0.9rem; }
+        .search-container { max-width: 500px; margin: 15px auto 0; }
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-input::placeholder { color: #888; }
+        .type-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .type-tab {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #fff;
+        }
+        .type-tab:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .type-tab.active { box-shadow: 0 0 20px currentColor; }
+        .type-tab.dimmed { opacity: 0.3; }
+        .type-tab.has-match { box-shadow: 0 0 15px currentColor; }
+        .type-격투 { background: #C22E28; }
+        .type-악 { background: #705746; }
+        .type-바위 { background: #B6A136; }
+        .type-땅 { background: #E2BF65; color: #333; }
+        .type-물 { background: #6390F0; }
+        .type-불꽃 { background: #EE8130; }
+        .type-풀 { background: #7AC74C; }
+        .type-고스트 { background: #735797; }
+        .type-벌레 { background: #A6B91A; }
+        .type-강철 { background: #B7B7CE; color: #333; }
+        .type-비행 { background: #A98FF3; }
+        .type-독 { background: #A33EA1; }
+        .type-전기 { background: #F7D02C; color: #333; }
+        .type-드래곤 { background: #6F35FC; }
+        .type-에스퍼 { background: #F95587; }
+        .type-페어리 { background: #D685AD; }
+        .type-얼음 { background: #96D9D6; color: #333; }
+        .content { max-width: 1400px; margin: 0 auto; padding: 0 20px 40px; }
+        .type-section { margin-bottom: 30px; display: none; }
+        .type-section.active { display: block; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 15px;
+        }
+        .section-header h2 { font-size: 1.5rem; }
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+        }
+        .pokemon-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 15px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .pokemon-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .pokemon-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+        .pokemon-moves { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+        .move { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; }
+        .move.normal { border-left: 3px solid #4CAF50; }
+        .move.charge { border-left: 3px solid #FF9800; }
+        .pokemon-stats { display: flex; justify-content: space-between; gap: 10px; }
+        .stat { flex: 1; text-align: center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .stat-label { font-size: 0.75rem; color: #888; margin-bottom: 3px; }
+        .stat-value { font-size: 1rem; font-weight: 700; }
+        .stat-value.high { color: #4CAF50; }
+        .stat-value.medium { color: #FFC107; }
+        .stat-value.low { color: #f44336; }
+        .pokemon-card-wrapper { position: relative; }
+        .pokemon-card-wrapper.hidden { display: none; }
+        .rank-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #333; }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: #fff; }
+        .info-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6390F0;
+        }
+        .info-box h3 { margin-bottom: 10px; color: #6390F0; }
+        .info-box p { color: #aaa; font-size: 0.9rem; line-height: 1.6; }
+        .show-more-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .show-more-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .footer { text-align: center; padding: 30px; color: #666; font-size: 0.85rem; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.4rem; }
+            .type-tabs { gap: 6px; padding: 15px; }
+            .type-tab { padding: 6px 12px; font-size: 0.8rem; }
+            .pokemon-grid { grid-template-columns: 1fr; }
+        }
